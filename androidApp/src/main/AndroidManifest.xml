@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Android Automotive OS app. Sideloading via adb ignores uses-feature, so it also runs on a phone
+         emulator for quick UI checks, but the target is the AAOS emulator. -->
+    <uses-feature android:name="android.hardware.type.automotive" android:required="true" />
+    <!-- AAOS devices may lack these; declaring them optional keeps the app installable. -->
+    <uses-feature android:name="android.hardware.wifi" android:required="false" />
+    <uses-feature android:name="android.hardware.screen.portrait" android:required="false" />
+    <uses-feature android:name="android.hardware.screen.landscape" android:required="false" />
+
+    <application
+        android:name=".AutoLinkApplication"
+        android:allowBackup="false"
+        android:label="AutoLink"
+        android:supportsRtl="true"
+        android:theme="@android:style/Theme.Material.NoActionBar">
+
+        <!-- Not marked distractionOptimized: this POC is a parked-use developer dashboard. -->
+        <activity
+            android:name=".MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+</manifest>
