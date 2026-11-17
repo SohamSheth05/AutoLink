@@ -3,6 +3,8 @@ package com.autolink.feature.vehicle.presentation
 import app.cash.turbine.test
 import com.autolink.core.common.time.WallClock
 import com.autolink.core.domain.vehicle.SignalQuality
+import com.autolink.feature.vehicle.FakeTelemetryQueue
+import com.autolink.feature.vehicle.data.telemetry.TelemetryRecorder
 import com.autolink.feature.vehicle.data.repository.ReconcilingVehicleRepository
 import com.autolink.feature.vehicle.data.simulator.SimulatedVehicleSource
 import kotlinx.coroutines.Dispatchers
@@ -29,7 +31,13 @@ class DashboardViewModelTest {
     @Test
     fun pausing_the_simulator_makes_the_dashboard_stale_and_resume_recovers() = runTest(dispatcher) {
         val sim = SimulatedVehicleSource(wallClock = WallClock { testScheduler.currentTime })
-        val vm = DashboardViewModel(ReconcilingVehicleRepository(sim, clock = { testScheduler.currentTime }), sim)
+        val queue = FakeTelemetryQueue()
+        val repo = ReconcilingVehicleRepository(
+            sim,
+            clock = { testScheduler.currentTime },
+            sink = TelemetryRecorder(queue, vehicleId = "demo-vehicle-001"),
+        )
+        val vm = DashboardViewModel(repo, queue, sim)
 
         vm.state.test {
             advanceTimeBy(1_100)
@@ -43,7 +51,10 @@ class DashboardViewModelTest {
 
             vm.onAction(DashboardAction.OnTogglePause)
             advanceTimeBy(300)
-            assertEquals(SignalQuality.LIVE, expectMostRecentItem().status.quality)
+            val resumed = expectMostRecentItem()
+            assertEquals(SignalQuality.LIVE, resumed.status.quality)
+            // Every accepted sample was recorded as 3 events, and the state shows the queue size.
+            assertEquals(resumed.status.diagnostics.accepted * 3, resumed.queue.pending)
             cancelAndIgnoreRemainingEvents()
         }
     }

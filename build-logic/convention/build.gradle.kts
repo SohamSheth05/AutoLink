@@ -10,6 +10,8 @@ dependencies {
     compileOnly(libs.kotlin.gradlePlugin)
     compileOnly(libs.compose.gradlePlugin)
     compileOnly(libs.compose.compiler.gradlePlugin)
+    compileOnly(libs.ksp.gradlePlugin)
+    compileOnly(libs.room.gradlePlugin)
 }
 
 gradlePlugin {
@@ -25,6 +27,10 @@ gradlePlugin {
         register("cmpFeature") {
             id = "convention.cmp.feature"
             implementationClass = "CmpFeatureConventionPlugin"
+        }
+        register("room") {
+            id = "convention.room"
+            implementationClass = "RoomConventionPlugin"
         }
         register("androidApplication") {
             id = "convention.android.application"
