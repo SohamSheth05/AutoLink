@@ -6,6 +6,14 @@ built to demonstrate signal freshness, event ordering and clean architecture.
 > **Portfolio integrity:** every value on screen is **SIMULATED**. This is not a certified automotive or
 > safety-critical system and does not read from or control a real vehicle.
 
+## Demo video (32 s, AAOS emulator)
+
+[![Watch the AutoLink demo: click to open the video](docs/screenshots/01-live.png)](docs/media/autolink-demo.mp4)
+
+**[▶ Watch the demo (MP4, 2 MB)](docs/media/autolink-demo.mp4)**: live data → duplicate and out-of-order
+readings dropped → pause → **STALE** → resume → **LIVE** → app force-stopped and relaunched, with stored
+telemetry continuing from the database (2,280 → 2,313 events).
+
 | Live | Paused → stale | Dropped readings | Resumed |
 |---|---|---|---|
 | ![](docs/screenshots/01-live.png) | ![](docs/screenshots/02-paused-stale.png) | ![](docs/screenshots/03-dropped-counters.png) | ![](docs/screenshots/04-resumed-live.png) |
