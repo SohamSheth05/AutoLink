@@ -8,9 +8,9 @@ built to demonstrate signal freshness, event ordering and clean architecture.
 
 ## Demo video (32 s, AAOS emulator)
 
-[![Watch the AutoLink demo: click to open the video](docs/screenshots/01-live.png)](docs/media/autolink-demo.mp4)
+![AutoLink demo on the AAOS emulator](docs/media/autolink-demo.gif)
 
-**[▶ Watch the demo (MP4, 2 MB)](docs/media/autolink-demo.mp4)**: live data → duplicate and out-of-order
+**[▶ Full-quality MP4 (2 MB)](https://github.com/SohamSheth05/AutoLink/raw/main/docs/media/autolink-demo.mp4)**: live data → duplicate and out-of-order
 readings dropped → pause → **STALE** → resume → **LIVE** → app force-stopped and relaunched, with stored
 telemetry continuing from the database (2,280 → 2,313 events).
 
