@@ -56,4 +56,27 @@ class ReconcilingVehicleRepositoryTest {
             cancelAndIgnoreRemainingEvents()
         }
     }
+
+    @Test
+    fun only_accepted_samples_reach_the_sink() = runTest {
+        val source = FakeVehicleSignalSource()
+        val recorded = mutableListOf<Long>()
+        val repo = ReconcilingVehicleRepository(
+            source,
+            clock = { testScheduler.currentTime },
+            sink = { recorded += it.seq },
+        )
+
+        repo.observeStatus().test {
+            awaitItem()
+            runCurrent()
+            source.emit(1, 10f)
+            source.emit(1, 10f) // duplicate
+            source.emit(3, 30f)
+            source.emit(2, 20f) // out of order
+            runCurrent()
+            assertEquals(listOf(1L, 3L), recorded)
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
 }

@@ -1,11 +1,13 @@
 package com.autolink.feature.vehicle.presentation
 
+import com.autolink.core.domain.telemetry.TelemetryQueueStats
 import com.autolink.core.domain.vehicle.SignalSource
 import com.autolink.core.domain.vehicle.VehicleStatus
 
 data class DashboardState(
     val status: VehicleStatus = VehicleStatus.unavailable(SignalSource.SIMULATED),
     val isSimulatorPaused: Boolean = false,
+    val queue: TelemetryQueueStats = TelemetryQueueStats(),
     val showDeveloperPanel: Boolean = true,
 )
 

@@ -160,6 +160,13 @@ private fun DeveloperPanel(state: DashboardState, onAction: (DashboardAction) ->
                 style = MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
+            val q = state.queue
+            Text(
+                // Survives app restarts: these counts come from the Room database, not memory.
+                "Stored events ${q.total} · pending upload ${q.pending} · acknowledged ${q.acknowledged}",
+                style = MaterialTheme.typography.bodyLarge,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
         }
     }
 }

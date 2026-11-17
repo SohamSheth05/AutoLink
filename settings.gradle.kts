@@ -34,5 +34,12 @@ dependencyResolutionManagement {
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 include(":androidApp", ":shared")
-include(":core:common", ":core:domain", ":core:designsystem", ":core:ui")
+include(
+    ":core:common",
+    ":core:domain",
+    ":core:database",
+    ":core:data",
+    ":core:designsystem",
+    ":core:ui",
+)
 include(":feature:vehicle")

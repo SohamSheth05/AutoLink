@@ -2,6 +2,7 @@ package com.autolink.feature.vehicle.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.autolink.core.domain.telemetry.TelemetryQueue
 import com.autolink.core.domain.vehicle.SimulatorControls
 import com.autolink.core.domain.vehicle.VehicleRepository
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,6 +18,7 @@ import kotlinx.coroutines.flow.update
  */
 class DashboardViewModel(
     repository: VehicleRepository,
+    telemetryQueue: TelemetryQueue,
     private val simulator: SimulatorControls?,
 ) : ViewModel() {
 
@@ -26,8 +28,9 @@ class DashboardViewModel(
         repository.observeStatus(),
         simulator?.isPaused ?: MutableStateFlow(false),
         showDeveloperPanel,
-    ) { status, paused, showPanel ->
-        DashboardState(status = status, isSimulatorPaused = paused, showDeveloperPanel = showPanel)
+        telemetryQueue.observeStats(),
+    ) { status, paused, showPanel, queue ->
+        DashboardState(status = status, isSimulatorPaused = paused, queue = queue, showDeveloperPanel = showPanel)
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), DashboardState())
 
     fun onAction(action: DashboardAction) {
